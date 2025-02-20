@@ -31,7 +31,7 @@ func Login(alerts ...string) templ.Component {
 			templ_7745c5c3_Var1 = templ.NopComponent
 		}
 		ctx = templ.ClearChildren(ctx)
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<style>\n\t\tbody {\n\t\t\tbackground-color: #e0f7fa;\n\t\t\tfont-family: Arial, sans-serif;\n\t\t\theight: 100dvh;\n\t\t\tmargin: 0;\n\t\t}\n\t\t.login-container {\n\t\t\tbackground-color: white;\n\t\t\tpadding: 20px;\n\t\t\tmargin: 0px 10px;\n\t\t\tborder-radius: 8px;\n\t\t\tbox-shadow: 0 0 10px rgba(0, 0, 0, 0.1);\n\t\t}\n\t\tinput[type=\"text\"], input[type=\"password\"] {\n\t\t\twidth: 100%;\n\t\t\tpadding: 10px;\n\t\t\tmargin: 10px 0;\n\t\t\tborder: 1px solid #00796b;\n\t\t\tborder-radius: 4px;\n\t\t}\n\t\tinput[type=\"submit\"] {\n\t\t\tbackground-color: #00796b;\n\t\t\tcolor: white;\n\t\t\tpadding: 10px;\n\t\t\tborder: none;\n\t\t\tborder-radius: 4px;\n\t\t\tcursor: pointer;\n\t\t\twidth: 100%;\n\t\t}\n\t\tinput[type=\"submit\"]:hover {\n\t\t\tbackground-color: #004d40;\n\t\t}\n\t</style><div class=\"login-container\"><div class=\"header-login-container\"><h2 class=\"title\">Welcome To</h2><img class=\"image-cover\" src=\"/resources/assets/server.PNG\" alt=\"Icon\" width=\"40%\"><h3 class=\"sub-title\">Media-Server</h3></div>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 1, "<style>\n\t\tbody {\n\t\t\tbackground-color: #e0f7fa;\n\t\t\tfont-family: Arial, sans-serif;\n\t\t\theight: 100dvh;\n\t\t\tmargin: 0;\n\t\t}\n\t\t.login-container {\n\t\t\tbackground-color: white;\n\t\t\tpadding: 20px;\n\t\t\tmargin: 0px 10px;\n\t\t\tborder-radius: 8px;\n\t\t\tbox-shadow: 0 0 10px rgba(0, 0, 0, 0.1);\n\t\t}\n\t\tinput[type=\"text\"], input[type=\"password\"] {\n\t\t\twidth: 100%;\n\t\t\tpadding: 10px;\n\t\t\tmargin: 10px 0;\n\t\t\tborder: 1px solid #00796b;\n\t\t\tborder-radius: 4px;\n\t\t}\n\t\tinput[type=\"submit\"] {\n\t\t\tbackground-color: #00796b;\n\t\t\tcolor: white;\n\t\t\tpadding: 10px;\n\t\t\tborder: none;\n\t\t\tborder-radius: 4px;\n\t\t\tcursor: pointer;\n\t\t\twidth: 100%;\n\t\t}\n\t\tinput[type=\"submit\"]:hover {\n\t\t\tbackground-color: #004d40;\n\t\t}\n\t</style><div class=\"login-container\"><div class=\"header-login-container\"><h2 class=\"title\">Welcome To</h2><h3 class=\"sub-title\">Media-Server</h3></div>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
@@ -43,7 +43,7 @@ func Login(alerts ...string) templ.Component {
 			var templ_7745c5c3_Var2 string
 			templ_7745c5c3_Var2, templ_7745c5c3_Err = templ.JoinStringErrs(alert)
 			if templ_7745c5c3_Err != nil {
-				return templ.Error{Err: templ_7745c5c3_Err, FileName: `features/views/login.templ`, Line: 47, Col: 44}
+				return templ.Error{Err: templ_7745c5c3_Err, FileName: `features/views/login.templ`, Line: 46, Col: 44}
 			}
 			_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var2))
 			if templ_7745c5c3_Err != nil {

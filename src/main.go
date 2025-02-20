@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"media-server/configs"
 	"media-server/features/routes"
+	"net/http"
 	"time"
 
 	"github.com/labstack/echo/v4"
@@ -13,6 +14,18 @@ import (
 func main() {
 	e := echo.New()
 
+	e.Use(middleware.CSRFWithConfig(middleware.CSRFConfig{
+		TokenLookup:    "cookie:_csrf",
+		CookiePath:     "/",
+		CookieDomain:   "",
+		CookieSecure:   false,
+		CookieHTTPOnly: false,
+		CookieSameSite: http.SameSiteStrictMode,
+	}))
+	e.Use(middleware.CORSWithConfig(middleware.CORSConfig{
+		AllowOrigins: []string{"http://localhost:3000"},
+		AllowHeaders: []string{echo.HeaderOrigin, echo.HeaderContentType, echo.HeaderAccept},
+	}))
 	e.Use(middleware.LoggerWithConfig(middleware.LoggerConfig{
 		Format:           "[INFO ] ${time_custom} - method=${method}, uri=${uri}, status=${status}\n",
 		CustomTimeFormat: time.DateTime,
