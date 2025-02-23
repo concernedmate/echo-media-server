@@ -217,7 +217,7 @@ templ Dashboard(files []FileEntity, alerts ...string) {
 }
 
 templ DashboardPage(files []FileEntity, alerts ...string) {
-	@template.Base("Dashboard Page") {
+	@template.BaseAdmin("Dashboard Page") {
 		@Dashboard(files, alerts...)
 	}
 }

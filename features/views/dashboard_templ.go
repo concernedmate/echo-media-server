@@ -205,7 +205,7 @@ func DashboardPage(files []FileEntity, alerts ...string) templ.Component {
 			}
 			return nil
 		})
-		templ_7745c5c3_Err = template.Base("Dashboard Page").Render(templ.WithChildren(ctx, templ_7745c5c3_Var9), templ_7745c5c3_Buffer)
+		templ_7745c5c3_Err = template.BaseAdmin("Dashboard Page").Render(templ.WithChildren(ctx, templ_7745c5c3_Var9), templ_7745c5c3_Buffer)
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}

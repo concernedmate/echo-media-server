@@ -52,6 +52,8 @@ func main() {
 		},
 	}))
 
+	routes.ResourcesRoutes(e)
+
 	routes.AuthRoutes(e)
 	routes.DashboardRoutes(e)
 
