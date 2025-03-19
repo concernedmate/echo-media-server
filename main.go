@@ -2,7 +2,9 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"media-server/configs"
+	"media-server/features/models"
 	"media-server/features/routes"
 	"net/http"
 	"time"
@@ -12,6 +14,10 @@ import (
 )
 
 func main() {
+	if err := models.InitSQLite(); err != nil {
+		log.Fatal(err.Error())
+	}
+
 	e := echo.New()
 
 	e.Use(middleware.CSRFWithConfig(middleware.CSRFConfig{
@@ -56,6 +62,8 @@ func main() {
 
 	routes.AuthRoutes(e)
 	routes.DashboardRoutes(e)
+
+	routes.APIFilesRoutes(e)
 
 	e.Logger.Fatal(e.Start(":3000"))
 }

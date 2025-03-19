@@ -1,1 +1,3 @@
-tmp/
+tmp
+uploads/*
+databases/database.sqlite3

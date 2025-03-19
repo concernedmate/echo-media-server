@@ -8,12 +8,16 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 )
 
+type Userdata struct {
+	Username   string
+	Password   *string
+	MaxStorage int
+}
+
 type jwtClaims struct {
 	Username string `json:"username"`
 	jwt.RegisteredClaims
 }
-
-var ErrInvalidCreds = errors.New("invalid username or password")
 
 func generateToken(username string, secret string) (result string, err error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwtClaims{
@@ -63,9 +67,23 @@ func CheckToken(tokenString string) (string, error) {
 }
 
 func Auth(username string, password string, secret string) (token string, err error) {
-	// TODO
-	if username != "admin" && password != configs.DEFAULT_PASSWORD {
-		return "", ErrInvalidCreds
+	var data Userdata
+
+	err = db.QueryRow(
+		`SELECT username, password, max_storage FROM users WHERE username = ?`, username,
+	).Scan(&data.Username, &data.Password, &data.MaxStorage)
+	if err != nil {
+		return "", errors.New("invalid username or password")
+	}
+
+	if data.Password == nil {
+		if password != configs.DEFAULT_PASSWORD {
+			return "", errors.New("invalid username or password")
+		}
+	} else {
+		if password != *data.Password {
+			return "", errors.New("invalid username or password")
+		}
 	}
 
 	token, err = generateToken(username, secret)
