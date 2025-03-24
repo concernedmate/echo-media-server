@@ -10,8 +10,6 @@ import (
 
 func CheckAuth(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
-		c.Cookie("token")
-
 		token, err := c.Cookie("token")
 		if err != nil {
 			return utils.RenderTempl(c, 200, views.LoginPage("token invalid"))

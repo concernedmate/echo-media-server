@@ -2,222 +2,181 @@ package views
 
 import (
 	"media-server/features/views/template"
-	"strconv"
 )
 
-type FileEntity struct {
-	Id           int
-	Originalname string
-	Filesize     int64
-	CreatedAt    string
+templ DashboardStyles () {
 }
 
-templ Dashboard(files []FileEntity, alerts ...string) {
-	<style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 20px;
-            max-height: 100dvh;
-            overflow-y: hidden;
-        }
-
-        .title {
-            font-size:xx-large;
-            color: #00463d;
-            font-weight: 700;
-            margin-bottom: 1vh;
-                
-            @media (min-width: 769px) {
-              text-align: center;
-            }
-
-            @media (max-width: 768px) and (min-width: 641px) {
-               text-align: center;
-            }
-
-            @media (max-width: 640px) {
-                text-align:start;
-            }
-        }
-
-        .container-upload {
-            width: 100%;
-        }
-
-        .container-card {
-            display: flex;
-            flex-wrap: wrap;
-            flex-direction: row;
-            gap: 1vw;
-            max-height: 70dvh;
-            overflow-y: auto;
-        }
-
-        .card {
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            padding-bottom: 8px;
-                
-            @media (min-width: 769px) {
-                flex: 23.9%;
-                max-width: 23.9%;
-            }
-
-            @media (max-width: 768px) and (min-width: 641px) {
-                flex: 31.9%;
-                max-width: 31.9%;
-            }
-
-            @media (max-width: 640px) {
-                flex: 48.9%;
-                max-width: 48.9%;
-            }
-
-        }
-
-        .card .card-header {
-            padding: 8px 0px;
-            background: #00463d;
-            font-weight: 600;
-            color: white;
-            font-size: large;
-            border-radius: 8px 8px 0px 0px;
-        }
-
-        .card i {
-            font-size: 40px;
-            color: #007bff;
-        }
-
-        .card h3 {
-            margin: 10px 0;
-        }
-
-        .card button {
-            background-color: #00796b;
-            border: 0px solid white;
-            color: white;
-            border-radius: 3px;
-            padding: 2px 6px;
-            transition: all 0.5s ease;
-        }
-
-        .card button:hover {
-            background-color: #00443c;
-            transform: scale(1.1);
-            cursor: pointer;
-        }
-
-        .upload-button {
-            margin-top: 1vh;
-            background-color: #00796b;
-            color: white;
-            font-weight: 700;
-            transition: all 0.5s ease;
-        }
-
-        .upload-button:hover {
-            background-color: #004d40;
-            cursor: pointer;
-        }
-
-        .popup-download {
-            background-color: white;
-            border: 2px solid #009783;
-            border-radius: 3px;
-            border-radius: 8px 8px 8px 8px;
-            position: absolute;
-            right: 5px;
-            top: 5px;
-            padding: 5px 10px;
-            width: 10vw;
-                
-            @media (min-width: 769px) {
-              width: 20vw;
-            }
-
-            @media (max-width: 768px) and (min-width: 641px) {
-              width: 30vw;
-            }
-
-            @media (max-width: 640px) {
-              width: 40vw;
-            }
-        }
-
-        .popup-download .title-popup {
-            color:#00463d;
-            margin-bottom: 0.5vh;
-        }
-
-        .popup-download .progress-bar {
-            background-color: #00796b;
-            border-radius: 5px;
-            margin-bottom: 0.5vh;
-            width: 0%;
-            height: 5px;
-        }
-
-        .popup-download .value {
-            color:#00463d;
-        }
-        
-    </style>
-	<script src="/resources/scripts/dashboard.js"></script>
-	<div>
-		<div class="title">FILE STORAGE</div>
-		<div class="popup-download" id="progress-container" style="display: none;">
-			<div class="title-popup" id="progress-title"></div>
-			<div class="progress-bar" id="progress-bar">&nbsp; </div>
-			<div class="value" id="progress-value">0% </div>
-		</div>
-		<div class="container-card">
-			for _,item := range files {
-				<div class="card">
-					<div class="card-header">
-						<div>{ item.Originalname }</div>
-					</div>
-					<p>
-						File Size: { 
-                            func ()string{
-                                if (item.Filesize == -1){
-                                    return "File Not Found!"
-                                }
-                                if (item.Filesize < 1000*1000){
-                                    return strconv.Itoa(int(item.Filesize/1000)) + "KB"
-                                }
-                                return strconv.Itoa(int(item.Filesize/1000/1000)) + "MB"
-                            }() }
-					</p>
-					<p>Created At: { item.CreatedAt }</p>
-					<button
-						onclick={ templ.ComponentScript{Call: "downloadFile('" + item.Originalname + "'," +
-                strconv.Itoa(item.Id) + ")" } }
-					>Download</button>
-					<button
-						onclick={ templ.ComponentScript{Call: "deleteFile(" + strconv.Itoa(item.Id) + ")"} }
-					>Delete</button>
-				</div>
-			}
-		</div>
-		<br/>
-		<div class="container-upload">
-			<input id="file" name="file" type="file" style="width: 95%;" required/>
-			<br/>
-			<input class="upload-button" onclick="uploadWithWebsocket()" value="UPLOAD"/>
-		</div>
-		for _,alert := range alerts {
-			<p style="color: red;">{ alert }</p>
-		}
-	</div>
+templ DashboardScripts () {
 }
 
-templ DashboardPage(files []FileEntity, alerts ...string) {
-	@template.BaseAdmin("Dashboard Page") {
-		@Dashboard(files, alerts...)
+templ DashboardPage(alerts ...string) {
+	@template.BaseAdmin(template.BaseEntity{
+        Styles: DashboardStyles(),
+        Scripts: DashboardScripts(),
+
+        Page: "Dashboard Page",
+        Subtitle: "",
+        Breadcrumbs: []string{},
+    }) {
+		<style>
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f4f4f4;
+                margin: 0;
+                padding: 20px;
+                max-height: 100dvh;
+                overflow-y: hidden;
+            }
+
+            .title {
+                font-size:xx-large;
+                color: #00463d;
+                font-weight: 700;
+                margin-bottom: 1vh;
+                    
+                @media (min-width: 769px) {
+                text-align: center;
+                }
+
+                @media (max-width: 768px) and (min-width: 641px) {
+                text-align: center;
+                }
+
+                @media (max-width: 640px) {
+                    text-align:start;
+                }
+            }
+
+            .container-upload {
+                width: 100%;
+            }
+
+            .container-card {
+                display: flex;
+                flex-wrap: wrap;
+                flex-direction: row;
+                gap: 1vw;
+                max-height: 70dvh;
+                overflow-y: auto;
+            }
+
+            .card {
+                background: white;
+                border-radius: 8px;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+                text-align: center;
+                padding-bottom: 8px;
+                    
+                @media (min-width: 769px) {
+                    flex: 23.9%;
+                    max-width: 23.9%;
+                }
+
+                @media (max-width: 768px) and (min-width: 641px) {
+                    flex: 31.9%;
+                    max-width: 31.9%;
+                }
+
+                @media (max-width: 640px) {
+                    flex: 48.9%;
+                    max-width: 48.9%;
+                }
+
+            }
+
+            .card .card-header {
+                padding: 8px 0px;
+                background: #00463d;
+                font-weight: 600;
+                color: white;
+                font-size: large;
+                border-radius: 8px 8px 0px 0px;
+            }
+
+            .card i {
+                font-size: 40px;
+                color: #007bff;
+            }
+
+            .card h3 {
+                margin: 10px 0;
+            }
+
+            .card button {
+                background-color: #00796b;
+                border: 0px solid white;
+                color: white;
+                border-radius: 3px;
+                padding: 2px 6px;
+                transition: all 0.5s ease;
+            }
+
+            .card button:hover {
+                background-color: #00443c;
+                transform: scale(1.1);
+                cursor: pointer;
+            }
+
+            .upload-button {
+                margin-top: 1vh;
+                background-color: #00796b;
+                color: white;
+                font-weight: 700;
+                transition: all 0.5s ease;
+            }
+
+            .upload-button:hover {
+                background-color: #004d40;
+                cursor: pointer;
+            }
+
+            .popup-download {
+                background-color: white;
+                border: 2px solid #009783;
+                border-radius: 3px;
+                border-radius: 8px 8px 8px 8px;
+                position: absolute;
+                right: 5px;
+                top: 5px;
+                padding: 5px 10px;
+                width: 10vw;
+                    
+                @media (min-width: 769px) {
+                width: 20vw;
+                }
+
+                @media (max-width: 768px) and (min-width: 641px) {
+                width: 30vw;
+                }
+
+                @media (max-width: 640px) {
+                width: 40vw;
+                }
+            }
+
+            .popup-download .title-popup {
+                color:#00463d;
+                margin-bottom: 0.5vh;
+            }
+
+            .popup-download .progress-bar {
+                background-color: #00796b;
+                border-radius: 5px;
+                margin-bottom: 0.5vh;
+                width: 0%;
+                height: 5px;
+            }
+
+            .popup-download .value {
+                color:#00463d;
+            }
+            
+        </style>
+        <div>
+            for _,alert := range alerts {
+                <p style="color: red;">{ alert }</p>
+            }
+        </div>
 	}
 }

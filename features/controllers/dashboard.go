@@ -8,5 +8,5 @@ import (
 )
 
 func DashboardPage(c echo.Context) error {
-	return utils.RenderTempl(c, 200, views.DashboardPage([]views.FileEntity{}))
+	return utils.RenderTempl(c, 200, views.DashboardPage())
 }

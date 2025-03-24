@@ -15,12 +15,31 @@ func UploadFile(c echo.Context) error {
 		dir = "/"
 	}
 
-	file, err := c.FormFile("file")
+	files, err := c.FormFile("file")
 	if err != nil {
 		return utils.ResponseJSON(c, 400, "[Bad Request] "+err.Error(), nil)
 	}
 
-	err = models.UploadFile(file, dir, "admin")
+	err = models.UploadFile(files, dir, "admin")
+	if err != nil {
+		return utils.ResponseJSON(c, 500, "[Internal Server Error] "+err.Error(), nil)
+	}
+
+	return utils.ResponseJSON(c, 200, "[Success]", nil)
+}
+
+func UploadMultipleFiles(c echo.Context) error {
+	dir := c.FormValue("dir")
+	if dir == "" {
+		dir = "/"
+	}
+
+	multipart, err := c.MultipartForm()
+	if err != nil {
+		return utils.ResponseJSON(c, 400, "[Bad Request] "+err.Error(), nil)
+	}
+
+	err = models.UploadMultipleFiles(multipart.File["files"], dir, "admin")
 	if err != nil {
 		return utils.ResponseJSON(c, 500, "[Internal Server Error] "+err.Error(), nil)
 	}
@@ -48,13 +67,40 @@ func DownloadFile(c echo.Context) error {
 	return c.Attachment(path.Join("./uploads", metadata.FileId), metadata.Filename)
 }
 
+func DeleteFile(c echo.Context) error {
+	var req struct {
+		FileID string `json:"file_id" validate:"required"`
+	}
+
+	err := c.Bind(&req)
+	if err != nil {
+		return utils.ResponseJSON(c, 400, "[Bad Request] "+err.Error(), nil)
+	}
+
+	if req.FileID == "" {
+		return utils.ResponseJSON(c, 400, "[Bad Request] file_id is required", nil)
+	}
+
+	err = models.DeleteFile(req.FileID)
+	if err != nil {
+		return utils.ResponseJSON(c, 500, "[Internal Server Error] "+err.Error(), nil)
+	}
+
+	return utils.ResponseJSON(c, 200, "[Success]", nil)
+}
+
 func ListFile(c echo.Context) error {
 	dir := c.FormValue("dir")
 	if dir == "" {
 		dir = "/"
 	}
 
-	files, err := models.ListFiles(dir)
+	username, ok := c.Get("username").(string)
+	if !ok {
+		return utils.ResponseJSON(c, 500, "[Internal Server Error] "+`invalid user data`, nil)
+	}
+
+	files, err := models.ListFiles(username, dir)
 	if err != nil {
 		return utils.ResponseJSON(c, 500, "[Internal Server Error] "+err.Error(), nil)
 	}

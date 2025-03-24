@@ -14,17 +14,13 @@ type Userdata struct {
 	MaxStorage int
 }
 
-type jwtClaims struct {
-	Username string `json:"username"`
-	jwt.RegisteredClaims
-}
-
-func generateToken(username string, secret string) (result string, err error) {
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwtClaims{
-		username,
-		jwt.RegisteredClaims{
-			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Hour * 72)),
-		},
+func generateToken(username string, role string, secret string) (result string, err error) {
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
+		"sub": username,                              // Subject (user identifier)
+		"iss": "media-server",                        // Issuer
+		"aud": role,                                  // Audience (user role)
+		"exp": time.Now().Add(time.Hour * 72).Unix(), // Expiration time
+		"iat": time.Now().Unix(),                     // Issued at
 	})
 
 	result, err = token.SignedString([]byte(secret))
@@ -48,21 +44,21 @@ func CheckToken(tokenString string) (string, error) {
 	}
 
 	if claims, ok := token.Claims.(jwt.MapClaims); ok {
-		if expired, ok := claims["exp"].(time.Time); ok {
-			if expired.Before(time.Now()) {
-				return "", errors.New("token expired")
-			}
-		} else {
+		exp, err := claims.GetExpirationTime()
+		if err != nil {
 			return "", err
+		}
+		if exp.Before(time.Now()) {
+			return "", errors.New("token expired")
 		}
 
-		if result, ok := claims["username"].(string); ok {
-			return result, nil
+		if username, ok := claims["sub"].(string); !ok {
+			return "", errors.New("invalid jwt token username")
 		} else {
-			return "", err
+			return username, nil
 		}
 	} else {
-		return "", err
+		return "", errors.New("invalid jwt token")
 	}
 }
 
@@ -86,7 +82,7 @@ func Auth(username string, password string, secret string) (token string, err er
 		}
 	}
 
-	token, err = generateToken(username, secret)
+	token, err = generateToken(username, "user", secret)
 	if err != nil {
 		return "", err
 	}

@@ -62,6 +62,7 @@ func main() {
 
 	routes.AuthRoutes(e)
 	routes.DashboardRoutes(e)
+	routes.DriveRoutes(e)
 
 	routes.APIFilesRoutes(e)
 

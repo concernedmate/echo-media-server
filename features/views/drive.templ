@@ -1,0 +1,95 @@
+package views
+
+import (
+	"media-server/features/views/template"
+    "strconv"
+	"media-server/features/models"
+)
+
+templ DriveStyles() {
+    
+}
+
+templ DriveScript() {
+    <script src="assets/pages/drive_pages.js"></script>
+}
+
+templ DrivePage(files []models.FileMetadata, alerts ...string) {
+	@template.BaseAdmin(
+        template.BaseEntity{
+            Styles: DriveStyles(),
+            Scripts: DriveScript(),
+            Page: "Dashboard Page",
+            Subtitle: "",
+            Breadcrumbs: []string{"/"},
+        }) {
+        <div>
+            for _,alert := range alerts {
+                <p style="color: red;">{ alert }</p>
+            }
+
+            <section id="input-file-browser">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">File Upload</h4>
+                            </div>
+
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label for="files" class="form-label">Multiple files input</label>
+                                            <input class="form-control" type="file" id="files" name="files" multiple>
+                                        </div>
+                                        <div class="mb-2">
+                                            <button class="btn btn-primary" onclick="uploadMultipleFiles()">Upload</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+
+            <section id="list-files-section">
+                <div class="row">
+                        for _,item := range files {
+                            <div class="col-xl-3 col-md-4 col-sm-6">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h5 class="card-title">{ item.Filename }</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <p>
+                                            File Size: { 
+                                                func ()string{
+                                                    if (item.Filesize == -1){
+                                                        return "File Not Found!"
+                                                    }
+                                                    if (item.Filesize < 1000*1000){
+                                                        return strconv.Itoa(int(item.Filesize/1000)) + "KB"
+                                                    }
+                                                    return strconv.Itoa(int(item.Filesize/1000/1000)) + "MB"
+                                                }() }
+                                        </p>
+                                        <p>Created At: { item.CreatedAt }</p>
+                                        <p>Updated At: { item.UpdatedAt }</p>
+                                        <button onclick={ 
+                                            templ.ComponentScript{Call: "downloadFile('" + item.Filename + "','" + item.FileId + "')" } 
+                                        }>Download</button>
+                                        <button
+                                            onclick={ templ.ComponentScript{Call: "deleteFile('" + item.FileId + "')"} }
+                                        >Delete</button>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                </div>
+            </section>
+        </div>
+	}
+}
