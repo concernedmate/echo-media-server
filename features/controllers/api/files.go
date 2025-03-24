@@ -29,17 +29,21 @@ func UploadFile(c echo.Context) error {
 }
 
 func UploadMultipleFiles(c echo.Context) error {
-	dir := c.FormValue("dir")
-	if dir == "" {
-		dir = "/"
-	}
-
 	multipart, err := c.MultipartForm()
 	if err != nil {
 		return utils.ResponseJSON(c, 400, "[Bad Request] "+err.Error(), nil)
 	}
+	dir := multipart.Value["dir"][0]
+	if dir == "" {
+		dir = "/"
+	}
 
-	err = models.UploadMultipleFiles(multipart.File["files"], dir, "admin")
+	username, ok := c.Get("username").(string)
+	if !ok {
+		return utils.ResponseJSON(c, 500, "[Internal Server Error] invalid username", nil)
+	}
+
+	err = models.UploadMultipleFiles(multipart.File["files"], dir, username)
 	if err != nil {
 		return utils.ResponseJSON(c, 500, "[Internal Server Error] "+err.Error(), nil)
 	}

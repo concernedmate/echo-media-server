@@ -1,6 +1,5 @@
 async function downloadFile(file_name, id) {
     try {
-        let download_progress = 0;
         let progress = 0;
 
         const resp = await fetch(`/api/v1/files/download?file_id=${id}`, { credentials: "same-origin" })
@@ -58,14 +57,19 @@ async function uploadMultipleFiles() {
     try {
         let formData = new FormData()
 
-        formData.append("dir", "/")
+        try {
+            const directory = window.location.search.split("?dir=")[1].split("&")[0]
+            formData.append("dir", directory)
+        } catch (error) {
+            formData.append("dir", "/")
+        }
         for (let i=0;i<files_elm.files.length;i++){
             /** @type {File} */
             const file = files_elm.files[i]
             formData.append("files", file)
         }
 
-        const resp = await fetch(`/api/v1/files/upload/batch`, {
+        await fetch(`/api/v1/files/upload/batch`, {
             method: "POST", 
             body: formData,
             credentials: "same-origin",
@@ -73,5 +77,17 @@ async function uploadMultipleFiles() {
         window.location.reload()
     } catch (error) {
         console.log(error)
+    }
+}
+
+function openFolder() {
+    let dir = document.getElementById("dir").value
+    if (dir != ""){
+        if (dir[0] != "/"){
+            dir = `/${dir}`
+        }
+        window.location.search = "?dir="+dir
+    }else{
+        window.location.search = ""
     }
 }

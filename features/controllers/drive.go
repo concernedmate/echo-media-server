@@ -18,12 +18,31 @@ func DrivePage(c echo.Context) error {
 
 	username, ok := c.Get("username").(string)
 	if !ok {
-		return utils.RenderTempl(c, 200, views.DrivePage([]models.FileMetadata{}, []string{"/"}, `invalid user data`))
+		return utils.RenderTempl(c, 200, views.DrivePage(
+			[]models.FileMetadata{},
+			[]models.DirectoryMetadata{},
+			[]string{"/"},
+			`invalid user data`,
+		))
 	}
 	files, err := models.ListFiles(username, dir)
 	if err != nil {
-		return utils.RenderTempl(c, 200, views.DrivePage([]models.FileMetadata{}, []string{"/"}, fmt.Sprintf(`error getting files data: %s`, err.Error())))
+		return utils.RenderTempl(c, 200, views.DrivePage(
+			[]models.FileMetadata{},
+			[]models.DirectoryMetadata{},
+			[]string{"/"},
+			fmt.Sprintf(`error getting files data: %s`, err.Error()),
+		))
+	}
+	dirs, err := models.ListDirectory(username, dir)
+	if err != nil {
+		return utils.RenderTempl(c, 200, views.DrivePage(
+			[]models.FileMetadata{},
+			[]models.DirectoryMetadata{},
+			[]string{"/"},
+			fmt.Sprintf(`error getting dirs data: %s`, err.Error()),
+		))
 	}
 
-	return utils.RenderTempl(c, 200, views.DrivePage(files, strings.Split(dir, "/")))
+	return utils.RenderTempl(c, 200, views.DrivePage(files, dirs, strings.Split(dir, "/")))
 }
