@@ -10,13 +10,13 @@ templ DashboardStyles () {
 templ DashboardScripts () {
 }
 
-templ DashboardPage(alerts ...string) {
+templ DashboardPage(username string, alerts ...string) {
 	@template.BaseAdmin(template.BaseEntity{
         Styles: DashboardStyles(),
         Scripts: DashboardScripts(),
 
         Page: "Dashboard Page",
-        Subtitle: "",
+        Subtitle: "Welcome to Media Server, "+username,
         Breadcrumbs: []string{},
     }) {
         <div>

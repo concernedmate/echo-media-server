@@ -2,6 +2,7 @@ package models
 
 import (
 	"io"
+	"media-server/configs"
 	"mime/multipart"
 	"os"
 	"path"
@@ -32,7 +33,7 @@ func UploadFile(file *multipart.FileHeader, directory string, username string) e
 	defer src.Close()
 
 	file_id := uuid.New()
-	dst, err := os.Create(path.Join("./uploads", file_id.String()))
+	dst, err := os.Create(path.Join(configs.UPLOAD_BASEDIR(), file_id.String()))
 	if err != nil {
 		return err
 	}
@@ -48,7 +49,7 @@ func UploadFile(file *multipart.FileHeader, directory string, username string) e
 		file_id, file.Filename, directory, username,
 	)
 	if err != nil {
-		_ = os.Remove(path.Join("./uploads", file_id.String()))
+		_ = os.Remove(path.Join(configs.UPLOAD_BASEDIR(), file_id.String()))
 		return err
 	}
 
@@ -64,7 +65,7 @@ func UploadMultipleFiles(files []*multipart.FileHeader, directory string, userna
 		defer src.Close()
 
 		file_id := uuid.New()
-		dst, err := os.Create(path.Join("./uploads", file_id.String()))
+		dst, err := os.Create(path.Join(configs.UPLOAD_BASEDIR(), file_id.String()))
 		if err != nil {
 			return err
 		}
@@ -80,7 +81,7 @@ func UploadMultipleFiles(files []*multipart.FileHeader, directory string, userna
 			file_id, file.Filename, directory, username,
 		)
 		if err != nil {
-			_ = os.Remove(path.Join("./uploads", file_id.String()))
+			_ = os.Remove(path.Join(configs.UPLOAD_BASEDIR(), file_id.String()))
 			return err
 		}
 	}
@@ -93,7 +94,7 @@ func DeleteFile(file_id string) error {
 		return err
 	}
 
-	_ = os.Remove(path.Join("./uploads", file_id))
+	_ = os.Remove(path.Join(configs.UPLOAD_BASEDIR(), file_id))
 	return nil
 }
 
@@ -130,7 +131,7 @@ func ListFiles(username string, basedir string) ([]FileMetadata, error) {
 			return []FileMetadata{}, err
 		}
 
-		file, err := os.Open(path.Join("./uploads", row.FileId))
+		file, err := os.Open(path.Join(configs.UPLOAD_BASEDIR(), row.FileId))
 		if err != nil {
 			row.Filesize = -1
 		} else {

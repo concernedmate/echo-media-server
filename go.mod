@@ -10,6 +10,8 @@ require (
 
 require github.com/mattn/go-sqlite3 v1.14.24
 
+require github.com/joho/godotenv v1.5.1
+
 require (
 	github.com/google/uuid v1.6.0
 	github.com/labstack/gommon v0.4.2 // indirect

@@ -14,6 +14,9 @@ import (
 )
 
 func main() {
+	if err := configs.InitConfig(); err != nil {
+		log.Fatal(err.Error())
+	}
 	if err := models.InitSQLite(); err != nil {
 		log.Fatal(err.Error())
 	}
@@ -41,7 +44,7 @@ func main() {
 		LogErrorFunc: func(c echo.Context, err error, stack []byte) error {
 			currentTime := time.Now().Local().Format(time.DateTime)
 			fmt.Printf("[ERROR] %s - %s\n", currentTime, err.Error())
-			if configs.LOG_STACK {
+			if configs.LOG_STACK() {
 				fmt.Printf("[STACK] ")
 				for _, data := range stack {
 					if string(data) == "\t" {
@@ -57,14 +60,18 @@ func main() {
 			return c.JSON(500, echo.Map{"message": "Internal Server Error"})
 		},
 	}))
+	e.Use()
 
 	routes.ResourcesRoutes(e)
 
 	routes.AuthRoutes(e)
 	routes.DashboardRoutes(e)
 	routes.DriveRoutes(e)
+	routes.ProfileRoutes(e)
 
 	routes.APIFilesRoutes(e)
+
+	routes.ErrorRoutes(e)
 
 	e.Logger.Fatal(e.Start(":3000"))
 }

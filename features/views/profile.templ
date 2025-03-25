@@ -1,0 +1,75 @@
+package views
+
+import "media-server/features/views/template"
+
+templ ProfileStyles() {
+}
+
+templ ProfileScripts() {
+}
+
+templ ProfilePage(username string, alerts ...string) {
+	@template.BaseAdmin(
+		template.BaseEntity{
+			Styles:      ProfileStyles(),
+			Scripts:     ProfileScripts(),
+			Page:        "Profile Page",
+			Subtitle:    "",
+			Breadcrumbs: []string{},
+		}) {
+		for _,alert := range alerts {
+			<p style="color: red;">{ alert }</p>
+		}
+		<section class="section">
+			<div class="row">
+				<div class="col-12 col-lg-4">
+					<div class="card">
+						<div class="card-body">
+							<div class="d-flex justify-content-center align-items-center flex-column">
+								<div class="avatar avatar-2xl">
+									<img src="/assets/compiled/jpg/2.jpg" alt="Avatar"/>
+								</div>
+								<h3 class="mt-3">{username}</h3>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-12 col-lg-8">
+					<div class="card">
+						<div class="card-body">
+							<form action="/profile" method="POST">
+								<div class="form-group">
+									<label for="name" class="form-label">Name</label>
+									<input type="text" class="form-control" disabled value={username} />
+								</div>
+								<div class="form-group">
+									<label for="password" class="form-label">Password</label>
+									<input
+										type="password"
+										name="password"
+										id="password"
+										class="form-control"
+										placeholder="current password"
+									/>
+								</div>
+                                <div class="form-group">
+									<label for="newpassword" class="form-label">New Password</label>
+									<input
+										type="password"
+										name="newpassword"
+										id="newpassword"
+										class="form-control"
+										placeholder="new password"
+									/>
+								</div>
+								<div class="form-group">
+									<button type="submit" class="btn btn-primary">Save Changes</button>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
+	}
+}

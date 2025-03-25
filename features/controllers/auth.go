@@ -16,14 +16,14 @@ func LoginPage(c echo.Context) error {
 		username := c.FormValue("username")
 		password := c.FormValue("password")
 
-		token, err := models.Auth(username, password, configs.JWT_SECRET)
+		token, err := models.Auth(username, password, configs.JWT_SECRET())
 		if err != nil {
 			return utils.RenderTempl(c, 200, views.LoginPage(err.Error()))
 		}
 
 		c.SetCookie(&http.Cookie{Name: "token", Value: token})
 
-		return c.Redirect(http.StatusFound, fmt.Sprintf("%s/dashboard", configs.BASE_URL))
+		return c.Redirect(http.StatusFound, fmt.Sprintf("%s/dashboard", configs.BASE_URL()))
 	}
 
 	return utils.RenderTempl(c, 200, views.LoginPage())

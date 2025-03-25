@@ -8,5 +8,9 @@ import (
 )
 
 func DashboardPage(c echo.Context) error {
-	return utils.RenderTempl(c, 200, views.DashboardPage())
+	username, ok := c.Get("username").(string)
+	if !ok {
+		return utils.RenderTempl(c, 200, views.LoginPage("user data corrupted"))
+	}
+	return utils.RenderTempl(c, 200, views.DashboardPage(username))
 }

@@ -37,7 +37,7 @@ func CheckToken(tokenString string) (string, error) {
 			return nil, errors.New("unexpected signing method")
 		}
 
-		return []byte(configs.JWT_SECRET), nil
+		return []byte(configs.JWT_SECRET()), nil
 	})
 	if err != nil {
 		return "", err
@@ -73,7 +73,7 @@ func Auth(username string, password string, secret string) (token string, err er
 	}
 
 	if data.Password == nil {
-		if password != configs.DEFAULT_PASSWORD {
+		if password != configs.DEFAULT_PASSWORD() {
 			return "", errors.New("invalid username or password")
 		}
 	} else {
@@ -88,4 +88,33 @@ func Auth(username string, password string, secret string) (token string, err er
 	}
 
 	return token, nil
+}
+
+func ChangePassword(username string, password string, newpassword string) error {
+	var data Userdata
+
+	err := db.QueryRow(
+		`SELECT username, password, max_storage FROM users WHERE username = ?`, username,
+	).Scan(&data.Username, &data.Password, &data.MaxStorage)
+	if err != nil {
+		return errors.New("invalid username or password")
+	}
+
+	if data.Password == nil {
+		if password != configs.DEFAULT_PASSWORD() {
+			return errors.New("invalid password")
+		}
+	} else {
+		if password != *data.Password {
+			return errors.New("invalid password")
+		}
+	}
+
+	// TODO bcrypt
+	_, err = db.Exec(`UPDATE users SET password = ? WHERE username = ?`, newpassword, username)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
