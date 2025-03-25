@@ -4,9 +4,7 @@ services:
       context: .
     container_name: media-server-app
     volumes:
-      - ./docker-volume/configs:/usr/app/configs
       - ./docker-volume/databases:/usr/app/databases
-      - ./docker-volume/logs:/usr/app/logs
       - ./docker-volume/uploads:/usr/app/uploads
       - ./docker-volume/.env:/usr/app/.env
     tty: true
