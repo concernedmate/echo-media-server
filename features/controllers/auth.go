@@ -1,7 +1,6 @@
 package controllers
 
 import (
-	"fmt"
 	"media-server/configs"
 	"media-server/features/models"
 	"media-server/features/views"
@@ -23,7 +22,7 @@ func LoginPage(c echo.Context) error {
 
 		c.SetCookie(&http.Cookie{Name: "token", Value: token})
 
-		return c.Redirect(http.StatusFound, fmt.Sprintf("%s/dashboard", configs.BASE_URL()))
+		return c.Redirect(http.StatusFound, "/dashboard")
 	}
 
 	return utils.RenderTempl(c, 200, views.LoginPage())
