@@ -163,6 +163,7 @@ func ListDirectory(username string, basedir string) ([]DirectoryMetadata, error)
 	defer rows.Close()
 
 	dirs := []DirectoryMetadata{}
+	cache := map[string]bool{}
 	for rows.Next() {
 		var row DirectoryMetadata
 		err = rows.Scan(&row.Directory)
@@ -172,16 +173,24 @@ func ListDirectory(username string, basedir string) ([]DirectoryMetadata, error)
 
 		if basedir == "/" {
 			split := strings.Split(row.Directory, "/")
-			if len(split) == 2 {
+			if len(split) > 1 {
 				row.Dirname = split[1]
-				dirs = append(dirs, row)
+				row.Directory = "/" + split[1]
+				if !cache[row.Dirname] {
+					dirs = append(dirs, row)
+					cache[row.Dirname] = true
+				}
 			}
 		} else {
 			split1 := strings.Split(row.Directory, basedir)[1]
 			split2 := strings.Split(split1, "/")
 			if len(split2) > 1 {
 				row.Dirname = split2[1]
-				dirs = append(dirs, row)
+				row.Directory = path.Join(basedir, split2[1])
+				if !cache[row.Dirname] {
+					dirs = append(dirs, row)
+					cache[row.Dirname] = true
+				}
 			}
 		}
 	}
