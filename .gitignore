@@ -1,6 +1,10 @@
 tmp
 uploads/*
-databases/database.sqlite3
+databases/*
+docker-volume/*
+docker-binaries/*
+configs/private.key
 
 .env
-configs/private.key
+
+!.gitkeep

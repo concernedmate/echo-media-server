@@ -16,7 +16,7 @@ var db *sql.DB
 func InitSQLite() error {
 	_, err := os.Open(path.Join("./databases", "database.sqlite3"))
 	if err != nil {
-		schema, err := os.Open(path.Join("./databases", "schema.sqlite3"))
+		schema, err := os.Open(path.Join("./migrations", "schema.sqlite3"))
 		if err != nil {
 			return err
 		}
