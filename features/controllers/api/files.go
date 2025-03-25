@@ -1,6 +1,7 @@
 package api
 
 import (
+	"media-server/configs"
 	"media-server/features/models"
 	"media-server/utils"
 	"os"
@@ -62,13 +63,13 @@ func DownloadFile(c echo.Context) error {
 		return utils.ResponseJSON(c, 400, "[Bad Request] "+err.Error(), nil)
 	}
 
-	file, err := os.Open(path.Join("./uploads", metadata.FileId))
+	file, err := os.Open(path.Join(configs.UPLOAD_BASEDIR(), metadata.FileId))
 	if err != nil {
 		return utils.ResponseJSON(c, 400, "[Bad Request] "+err.Error(), nil)
 	}
 	defer file.Close()
 
-	return c.Attachment(path.Join("./uploads", metadata.FileId), metadata.Filename)
+	return c.Attachment(path.Join(configs.UPLOAD_BASEDIR(), metadata.FileId), metadata.Filename)
 }
 
 func DeleteFile(c echo.Context) error {
