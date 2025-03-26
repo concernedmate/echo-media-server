@@ -133,7 +133,7 @@ func DrivePage(files []models.FileMetadata, dirs []models.DirectoryMetadata, dir
 				return templ_7745c5c3_Err
 			}
 			for _, item := range dirs {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "<tr><td><div class=\"dropdown\"><div class=\"dropdown-toggle me-1\" type=\"button\" id=\"dropdownMenuButtonSec\" data-bs-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"true\"><i class=\"bi bi-folder-fill\"></i></div><div class=\"dropdown-menu\" aria-labelledby=\"dropdownMenuButtonSec\" data-popper-placement=\"bottom-start\"><div class=\"dropdown-item\"><i class=\"bi bi-hdd-stack\"></i> -</div><a href=\"")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 7, "<tr><td><div class=\"dropdown-toggle me-1\" type=\"button\" id=\"dropdownMenuButtonSec\" data-bs-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"true\"><i class=\"bi bi-folder-fill\"></i></div><div class=\"dropdown-menu\" aria-labelledby=\"dropdownMenuButtonSec\" data-popper-placement=\"bottom-start\"><a href=\"")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -142,14 +142,14 @@ func DrivePage(files []models.FileMetadata, dirs []models.DirectoryMetadata, dir
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "\" class=\"dropdown-item\"><i class=\"bi bi-folder2-open\"></i> Open</a></div></div></td><td>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "\" class=\"dropdown-item\"><i class=\"bi bi-folder2-open\"></i> Open</a></div></td><td>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var7 string
 				templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(item.Dirname)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `features/views/drive.templ`, Line: 100, Col: 28}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `features/views/drive.templ`, Line: 95, Col: 28}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 				if templ_7745c5c3_Err != nil {
@@ -161,7 +161,7 @@ func DrivePage(files []models.FileMetadata, dirs []models.DirectoryMetadata, dir
 				}
 			}
 			for _, item := range files {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "<tr><td><div class=\"dropright\"><div class=\"dropdown-toggle me-1\" type=\"button\" id=\"dropdownMenuButtonSec\" data-bs-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"true\"><i class=\"bi bi-file-fill\"></i></div><div class=\"dropdown-menu\" aria-labelledby=\"dropdownMenuButtonSec\" data-popper-placement=\"bottom-start\"><div class=\"dropdown-item\"><i class=\"bi bi-hdd-stack\"></i> ")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "<tr><td><div class=\"dropdown-toggle me-1\" type=\"button\" id=\"dropdownMenuButtonSec\" data-bs-toggle=\"dropdown\" aria-haspopup=\"true\" aria-expanded=\"true\"><i class=\"bi bi-file-fill\"></i></div><div class=\"dropdown-menu\" aria-labelledby=\"dropdownMenuButtonSec\" data-popper-placement=\"bottom-start\"><div class=\"dropdown-item\"><i class=\"bi bi-hdd-stack\"></i> ")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -177,7 +177,7 @@ func DrivePage(files []models.FileMetadata, dirs []models.DirectoryMetadata, dir
 						return strconv.Itoa(int(item.Filesize/1000/1000)) + " MB"
 					}())
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `features/views/drive.templ`, Line: 123, Col: 59}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `features/views/drive.templ`, Line: 117, Col: 59}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var8))
 				if templ_7745c5c3_Err != nil {
@@ -217,14 +217,14 @@ func DrivePage(files []models.FileMetadata, dirs []models.DirectoryMetadata, dir
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "\" class=\"dropdown-item\"><i class=\"bi bi-trash-fill\"></i> Delete</button></div></div></td><td>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 15, "\" class=\"dropdown-item\"><i class=\"bi bi-trash-fill\"></i> Delete</button></div></td><td>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var11 string
 				templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(item.Filename)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `features/views/drive.templ`, Line: 143, Col: 29}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `features/views/drive.templ`, Line: 136, Col: 29}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var11))
 				if templ_7745c5c3_Err != nil {
@@ -245,7 +245,7 @@ func DrivePage(files []models.FileMetadata, dirs []models.DirectoryMetadata, dir
 					return strconv.Itoa(int(item.Filesize/1000/1000)) + " MB"
 				}())
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `features/views/drive.templ`, Line: 153, Col: 47}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `features/views/drive.templ`, Line: 146, Col: 47}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var12))
 				if templ_7745c5c3_Err != nil {
@@ -258,7 +258,7 @@ func DrivePage(files []models.FileMetadata, dirs []models.DirectoryMetadata, dir
 				var templ_7745c5c3_Var13 string
 				templ_7745c5c3_Var13, templ_7745c5c3_Err = templ.JoinStringErrs(item.UpdatedAt)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `features/views/drive.templ`, Line: 155, Col: 30}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `features/views/drive.templ`, Line: 148, Col: 30}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var13))
 				if templ_7745c5c3_Err != nil {

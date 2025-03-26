@@ -83,18 +83,13 @@ templ DrivePage(files []models.FileMetadata, dirs []models.DirectoryMetadata, di
 								for _,item := range dirs {
 									<tr>
 										<td>
-											<div class="dropdown">
-												<div class="dropdown-toggle me-1" type="button" id="dropdownMenuButtonSec" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-													<i class="bi bi-folder-fill"></i>
-												</div>
-												<div class="dropdown-menu" aria-labelledby="dropdownMenuButtonSec" data-popper-placement="bottom-start">
-													<div class="dropdown-item">
-														<i class="bi bi-hdd-stack"></i> -
-													</div>
-													<a href={ templ.SafeURL("drive?dir=" + item.Directory) } class="dropdown-item">
-														<i class="bi bi-folder2-open"></i> Open
-													</a>
-												</div>
+											<div class="dropdown-toggle me-1" type="button" id="dropdownMenuButtonSec" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+												<i class="bi bi-folder-fill"></i>
+											</div>
+											<div class="dropdown-menu" aria-labelledby="dropdownMenuButtonSec" data-popper-placement="bottom-start">
+												<a href={ templ.SafeURL("drive?dir=" + item.Directory) } class="dropdown-item">
+													<i class="bi bi-folder2-open"></i> Open
+												</a>
 											</div>
 										</td>
 										<td>{ item.Dirname }</td>
@@ -105,13 +100,12 @@ templ DrivePage(files []models.FileMetadata, dirs []models.DirectoryMetadata, di
 								for _,item := range files {
 									<tr>
 										<td>
-											<div class="dropright">
-												<div class="dropdown-toggle me-1" type="button" id="dropdownMenuButtonSec" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-													<i class="bi bi-file-fill"></i>
-												</div>
-												<div class="dropdown-menu" aria-labelledby="dropdownMenuButtonSec" data-popper-placement="bottom-start">
-													<div class="dropdown-item">
-														<i class="bi bi-hdd-stack"></i> { 
+											<div class="dropdown-toggle me-1" type="button" id="dropdownMenuButtonSec" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+												<i class="bi bi-file-fill"></i>
+											</div>
+											<div class="dropdown-menu" aria-labelledby="dropdownMenuButtonSec" data-popper-placement="bottom-start">
+												<div class="dropdown-item">
+													<i class="bi bi-hdd-stack"></i> { 
                                                         func ()string{
                                                             if (item.Filesize == -1){
                                                                 return "File Not Found!"
@@ -121,23 +115,22 @@ templ DrivePage(files []models.FileMetadata, dirs []models.DirectoryMetadata, di
                                                             }
                                                             return strconv.Itoa(int(item.Filesize/1000/1000)) + " MB"
                                                         }() }
-													</div>
-													<button class="dropdown-item">
-														<i class="bi bi-envelope-open-fill"></i> Open
-													</button>
-													<button
-														onclick={ templ.ComponentScript{Call: "downloadFile('" + item.Filename + "','" + item.FileId + "')"} }
-														class="dropdown-item"
-													>
-														<i class="bi bi-cloud-download-fill"></i> Download
-													</button>
-													<button
-														onclick={ templ.ComponentScript{Call: "deleteFile('" + item.FileId + "')"} }
-														class="dropdown-item"
-													>
-														<i class="bi bi-trash-fill"></i> Delete
-													</button>
 												</div>
+												<button class="dropdown-item">
+													<i class="bi bi-envelope-open-fill"></i> Open
+												</button>
+												<button
+													onclick={ templ.ComponentScript{Call: "downloadFile('" + item.Filename + "','" + item.FileId + "')"} }
+													class="dropdown-item"
+												>
+													<i class="bi bi-cloud-download-fill"></i> Download
+												</button>
+												<button
+													onclick={ templ.ComponentScript{Call: "deleteFile('" + item.FileId + "')"} }
+													class="dropdown-item"
+												>
+													<i class="bi bi-trash-fill"></i> Delete
+												</button>
 											</div>
 										</td>
 										<td>{ item.Filename }</td>
