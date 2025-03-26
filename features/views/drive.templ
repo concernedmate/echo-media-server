@@ -119,12 +119,13 @@ templ DrivePage(files []models.FileMetadata, dirs []models.DirectoryMetadata, di
 												<button class="dropdown-item">
 													<i class="bi bi-envelope-open-fill"></i> Open
 												</button>
-												<button
-													onclick={ templ.ComponentScript{Call: "downloadFile('" + item.Filename + "','" + item.FileId + "')"} }
+												<a
+													target="_blank"
+													href={ templ.SafeURL(`/api/v1/files/download?file_id=` + item.FileId) }
 													class="dropdown-item"
 												>
 													<i class="bi bi-cloud-download-fill"></i> Download
-												</button>
+												</a>
 												<button
 													onclick={ templ.ComponentScript{Call: "deleteFile('" + item.FileId + "')"} }
 													class="dropdown-item"
