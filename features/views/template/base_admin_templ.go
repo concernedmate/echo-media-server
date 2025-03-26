@@ -74,7 +74,7 @@ func BaseAdmin(data BaseEntity) templ.Component {
 		var templ_7745c5c3_Var3 string
 		templ_7745c5c3_Var3, templ_7745c5c3_Err = templ.JoinStringErrs(data.Page)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `features/views/template/base_admin.templ`, Line: 131, Col: 36}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `features/views/template/base_admin.templ`, Line: 129, Col: 36}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var3))
 		if templ_7745c5c3_Err != nil {
@@ -96,14 +96,14 @@ func BaseAdmin(data BaseEntity) templ.Component {
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
-		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "<div id=\"main\"><div class=\"page-heading\"><div class=\"page-title\"><div class=\"row\"><div class=\"col-12 col-md-6 order-md-1 order-last\"><h3>")
+		templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 5, "<div id=\"main\"><header class=\"mb-3\"><a href=\"#\" class=\"burger-btn d-block d-xl-none\"><i class=\"bi bi-justify fs-3\"></i></a></header><div class=\"page-heading\"><div class=\"page-title\"><div class=\"row\"><div class=\"col-12 col-md-6 order-md-1 order-last\"><h3>")
 		if templ_7745c5c3_Err != nil {
 			return templ_7745c5c3_Err
 		}
 		var templ_7745c5c3_Var4 string
 		templ_7745c5c3_Var4, templ_7745c5c3_Err = templ.JoinStringErrs(data.Page)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `features/views/template/base_admin.templ`, Line: 147, Col: 24}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `features/views/template/base_admin.templ`, Line: 150, Col: 24}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var4))
 		if templ_7745c5c3_Err != nil {
@@ -116,7 +116,7 @@ func BaseAdmin(data BaseEntity) templ.Component {
 		var templ_7745c5c3_Var5 string
 		templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(data.Subtitle)
 		if templ_7745c5c3_Err != nil {
-			return templ.Error{Err: templ_7745c5c3_Err, FileName: `features/views/template/base_admin.templ`, Line: 148, Col: 60}
+			return templ.Error{Err: templ_7745c5c3_Err, FileName: `features/views/template/base_admin.templ`, Line: 151, Col: 60}
 		}
 		_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 		if templ_7745c5c3_Err != nil {
@@ -127,7 +127,7 @@ func BaseAdmin(data BaseEntity) templ.Component {
 			return templ_7745c5c3_Err
 		}
 		for idx, item := range data.Breadcrumbs {
-			if idx == len(data.Breadcrumbs)-1 {
+			if idx == 0 {
 				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 8, "<li class=\"breadcrumb-item active\" aria-current=\"page\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
@@ -135,7 +135,7 @@ func BaseAdmin(data BaseEntity) templ.Component {
 				var templ_7745c5c3_Var6 string
 				templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(item)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `features/views/template/base_admin.templ`, Line: 155, Col: 74}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `features/views/template/base_admin.templ`, Line: 158, Col: 74}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 				if templ_7745c5c3_Err != nil {
@@ -146,20 +146,20 @@ func BaseAdmin(data BaseEntity) templ.Component {
 					return templ_7745c5c3_Err
 				}
 			} else {
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "<li class=\"breadcrumb-item\"><a href=\"#\">")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 10, "<li class=\"breadcrumb-item\">")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
 				var templ_7745c5c3_Var7 string
 				templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(item)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `features/views/template/base_admin.templ`, Line: 157, Col: 59}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `features/views/template/base_admin.templ`, Line: 160, Col: 47}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "</a></li>")
+				templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 11, "</li>")
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}

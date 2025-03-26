@@ -117,7 +117,7 @@ func DrivePage(files []models.FileMetadata, dirs []models.DirectoryMetadata, dir
 				var templ_7745c5c3_Var5 string
 				templ_7745c5c3_Var5, templ_7745c5c3_Err = templ.JoinStringErrs(alert)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `features/views/drive.templ`, Line: 30, Col: 46}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `features/views/drive.templ`, Line: 30, Col: 34}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var5))
 				if templ_7745c5c3_Err != nil {
@@ -128,7 +128,7 @@ func DrivePage(files []models.FileMetadata, dirs []models.DirectoryMetadata, dir
 					return templ_7745c5c3_Err
 				}
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "<section id=\"input-file-browser\"><div class=\"row\"><div class=\"col-md-8\"><div class=\"card\"><div class=\"card-header\"><h4 class=\"card-title\">File Upload</h4></div><div class=\"card-body\"><div class=\"row\"><div class=\"col-md-6\"><div class=\"mb-3\"><label for=\"files\" class=\"form-label\">Multiple files input</label> <input class=\"form-control\" type=\"file\" id=\"files\" name=\"files\" multiple></div><div class=\"mb-2\"><button class=\"btn btn-primary\" onclick=\"uploadMultipleFiles()\">Upload</button></div></div><div class=\"col-md-6\"><div class=\"mb-3\"><label for=\"dir\" class=\"form-label\">New Directory</label> <input class=\"form-control\" type=\"text\" id=\"dir\" name=\"dir\"></div><div class=\"mb-2\"><button class=\"btn btn-primary\" onclick=\"openFolder()\">Open</button></div></div></div></div></div></div></div></section><section id=\"tables\"><div class=\"card\"><div class=\"card-body\"><table class=\"table table-striped\" id=\"table1\"><thead><tr><th></th><th>Filename</th><th>Filesize</th><th>Directory</th><th>Created At</th><th>Updated At</th><th>Action</th></tr></thead> <tbody>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 6, "<section id=\"input-file-browser\"><div class=\"row\"><div class=\"col-md-8\"><div class=\"card\"><div class=\"card-header\"><h4 class=\"card-title\">File Upload</h4></div><div class=\"card-body\"><div class=\"row\"><label for=\"files\" class=\"form-label\">Multiple files input</label><div class=\"input-group\"><input class=\"form-control\" type=\"file\" id=\"files\" name=\"files\" multiple> <button class=\"btn btn-primary\" onclick=\"uploadMultipleFiles()\">Upload</button></div></div></div></div></div><div class=\"col-md-4\"><div class=\"card\"><div class=\"card-header\"><h4 class=\"card-title\">New Directory</h4></div><div class=\"card-body\"><div class=\"row\"><label for=\"dir\" class=\"form-label\">Must not includes '/'</label><div class=\"input-group\"><button class=\"btn btn-secondary\" onclick=\"goBack()\">..</button> <input class=\"form-control\" type=\"text\" id=\"dir\" name=\"dir\"> <button class=\"btn btn-primary\" onclick=\"openFolder()\">Open</button></div></div></div></div></div></div></section><section id=\"tables\"><div class=\"card\"><div class=\"card-body\"><table class=\"table table-striped\" id=\"table1\"><thead><tr><th></th><th>Filename</th><th>Filesize</th><th>Directory</th><th>Created At</th><th>Updated At</th><th>Action</th></tr></thead> <tbody>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
@@ -140,7 +140,7 @@ func DrivePage(files []models.FileMetadata, dirs []models.DirectoryMetadata, dir
 				var templ_7745c5c3_Var6 string
 				templ_7745c5c3_Var6, templ_7745c5c3_Err = templ.JoinStringErrs(item.Dirname)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `features/views/drive.templ`, Line: 125, Col: 57}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `features/views/drive.templ`, Line: 123, Col: 28}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var6))
 				if templ_7745c5c3_Err != nil {
@@ -153,7 +153,7 @@ func DrivePage(files []models.FileMetadata, dirs []models.DirectoryMetadata, dir
 				var templ_7745c5c3_Var7 string
 				templ_7745c5c3_Var7, templ_7745c5c3_Err = templ.JoinStringErrs(item.Directory)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `features/views/drive.templ`, Line: 127, Col: 59}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `features/views/drive.templ`, Line: 125, Col: 30}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var7))
 				if templ_7745c5c3_Err != nil {
@@ -181,7 +181,7 @@ func DrivePage(files []models.FileMetadata, dirs []models.DirectoryMetadata, dir
 				var templ_7745c5c3_Var9 string
 				templ_7745c5c3_Var9, templ_7745c5c3_Err = templ.JoinStringErrs(item.Filename)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `features/views/drive.templ`, Line: 138, Col: 58}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `features/views/drive.templ`, Line: 136, Col: 29}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var9))
 				if templ_7745c5c3_Err != nil {
@@ -203,7 +203,7 @@ func DrivePage(files []models.FileMetadata, dirs []models.DirectoryMetadata, dir
 						return strconv.Itoa(int(item.Filesize/1000/1000)) + "MB"
 					}())
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `features/views/drive.templ`, Line: 148, Col: 47}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `features/views/drive.templ`, Line: 147, Col: 47}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var10))
 				if templ_7745c5c3_Err != nil {
@@ -216,7 +216,7 @@ func DrivePage(files []models.FileMetadata, dirs []models.DirectoryMetadata, dir
 				var templ_7745c5c3_Var11 string
 				templ_7745c5c3_Var11, templ_7745c5c3_Err = templ.JoinStringErrs(item.Directory)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `features/views/drive.templ`, Line: 150, Col: 59}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `features/views/drive.templ`, Line: 149, Col: 30}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var11))
 				if templ_7745c5c3_Err != nil {
@@ -229,7 +229,7 @@ func DrivePage(files []models.FileMetadata, dirs []models.DirectoryMetadata, dir
 				var templ_7745c5c3_Var12 string
 				templ_7745c5c3_Var12, templ_7745c5c3_Err = templ.JoinStringErrs(item.CreatedAt)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `features/views/drive.templ`, Line: 151, Col: 59}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `features/views/drive.templ`, Line: 150, Col: 30}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var12))
 				if templ_7745c5c3_Err != nil {
@@ -242,7 +242,7 @@ func DrivePage(files []models.FileMetadata, dirs []models.DirectoryMetadata, dir
 				var templ_7745c5c3_Var13 string
 				templ_7745c5c3_Var13, templ_7745c5c3_Err = templ.JoinStringErrs(item.UpdatedAt)
 				if templ_7745c5c3_Err != nil {
-					return templ.Error{Err: templ_7745c5c3_Err, FileName: `features/views/drive.templ`, Line: 152, Col: 59}
+					return templ.Error{Err: templ_7745c5c3_Err, FileName: `features/views/drive.templ`, Line: 151, Col: 30}
 				}
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ.EscapeString(templ_7745c5c3_Var13))
 				if templ_7745c5c3_Err != nil {
@@ -252,8 +252,7 @@ func DrivePage(files []models.FileMetadata, dirs []models.DirectoryMetadata, dir
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templ.RenderScriptItems(ctx, templ_7745c5c3_Buffer,
-					templ.ComponentScript{Call: "downloadFile('" + item.Filename + "','" + item.FileId + "')"})
+				templ_7745c5c3_Err = templ.RenderScriptItems(ctx, templ_7745c5c3_Buffer, templ.ComponentScript{Call: "downloadFile('" + item.Filename + "','" + item.FileId + "')"})
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -270,8 +269,7 @@ func DrivePage(files []models.FileMetadata, dirs []models.DirectoryMetadata, dir
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templ.RenderScriptItems(ctx, templ_7745c5c3_Buffer,
-					templ.ComponentScript{Call: "deleteFile('" + item.FileId + "')"})
+				templ_7745c5c3_Err = templ.RenderScriptItems(ctx, templ_7745c5c3_Buffer, templ.ComponentScript{Call: "deleteFile('" + item.FileId + "')"})
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}

@@ -53,7 +53,7 @@ async function deleteFile(id) {
 async function uploadMultipleFiles() {
     const files_elm = document.getElementById("files")
 
-    if (files_elm == null) {return}
+    if (files_elm == null) { return }
     try {
         let formData = new FormData()
 
@@ -63,14 +63,14 @@ async function uploadMultipleFiles() {
         } catch (error) {
             formData.append("dir", "/")
         }
-        for (let i=0;i<files_elm.files.length;i++){
+        for (let i = 0; i < files_elm.files.length; i++) {
             /** @type {File} */
             const file = files_elm.files[i]
             formData.append("files", file)
         }
 
         await fetch(`/api/v1/files/upload/batch`, {
-            method: "POST", 
+            method: "POST",
             body: formData,
             credentials: "same-origin",
         })
@@ -82,12 +82,34 @@ async function uploadMultipleFiles() {
 
 function openFolder() {
     let dir = document.getElementById("dir").value
-    if (dir != ""){
-        if (dir[0] != "/"){
+    if (dir == "") {
+        window.location.search = ""
+    } else {
+        if (dir.includes('/')) {
+            return document.getElementById("dir") = ""
+        }
+        if (dir[0] != "/") {
             dir = `/${dir}`
         }
-        window.location.search = "?dir="+dir
-    }else{
-        window.location.search = ""
+        if (window.location.search.includes("?dir=")) {
+            window.location.search += dir
+        } else {
+            window.location.search = "?dir=" + dir
+        }
+    }
+}
+
+function goBack() {
+    if (window.location.search.includes("?dir=")) {
+        let curr_dir = window.location.search.split("?dir=")[1]
+        if (curr_dir.includes("&")) {
+            curr_dir = curr_dir.split("&")[0]
+        }
+
+        const splitted_dir = curr_dir.split("/")
+        splitted_dir.pop()
+        const new_dir = splitted_dir.join("/")
+
+        window.location.search = "?dir=" + new_dir
     }
 }
