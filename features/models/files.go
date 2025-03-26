@@ -88,6 +88,18 @@ func UploadMultipleFiles(files []*multipart.FileHeader, directory string, userna
 	return nil
 }
 
+func SaveFileWebsocket(file_id string, filename string, directory string, username string) error {
+	_, err := db.Exec(
+		`INSERT INTO files (file_id, filename, directory, username) VALUES (?, ?, ?, ?)`,
+		file_id, filename, directory, username,
+	)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func DeleteFile(file_id string) error {
 	_, err := db.Exec(`DELETE FROM files WHERE file_id = ?`, file_id)
 	if err != nil {

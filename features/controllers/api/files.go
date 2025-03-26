@@ -1,8 +1,10 @@
 package api
 
 import (
+	"fmt"
 	"media-server/configs"
 	"media-server/features/models"
+	"media-server/features/websockets"
 	"media-server/utils"
 	"os"
 	"path"
@@ -50,6 +52,14 @@ func UploadMultipleFiles(c echo.Context) error {
 	}
 
 	return utils.ResponseJSON(c, 200, "[Success]", nil)
+}
+
+func UploadMultipleFileViaWS(c echo.Context) error {
+	err := websockets.UploadMultipleFiles(c)
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+	return nil
 }
 
 func DownloadFile(c echo.Context) error {
