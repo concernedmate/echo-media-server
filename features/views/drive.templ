@@ -143,7 +143,7 @@ templ DrivePage(files []models.FileMetadata, dirs []models.DirectoryMetadata, di
 													<i class="bi bi-cloud-download-fill"></i> Download
 												</a>
 												<button
-													onclick={ templ.ComponentScript{Call: "deleteFile('" + item.FileId + "')"} }
+													onclick={ templ.JSFuncCall("deleteFile", item.FileId) }
 													class="dropdown-item"
 												>
 													<i class="bi bi-trash-fill"></i> Delete
@@ -170,6 +170,7 @@ templ DrivePage(files []models.FileMetadata, dirs []models.DirectoryMetadata, di
 					</div>
 				</div>
 			</section>
+			
 			// modal
 			<div class="modal fade" id="modalPreview" tabindex="-1" role="dialog" aria-hidden="true">
 				<div
@@ -186,13 +187,6 @@ templ DrivePage(files []models.FileMetadata, dirs []models.DirectoryMetadata, di
 					</div>
 				</div>
 			</div>
-			<script>
-				function showModalImage(file_id, filename){
-					document.getElementById("modalPreviewTitle").innerHTML = filename
-					document.getElementById("modalImageBody").src = `/api/v1/files/show?file_id=${file_id}`
-					document.getElementById("modalImageBody").alt = filename
-				}
-			</script>
 		</div>
 	}
 }

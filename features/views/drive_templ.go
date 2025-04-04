@@ -255,7 +255,7 @@ func DrivePage(files []models.FileMetadata, dirs []models.DirectoryMetadata, dir
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				templ_7745c5c3_Err = templ.RenderScriptItems(ctx, templ_7745c5c3_Buffer, templ.ComponentScript{Call: "deleteFile('" + item.FileId + "')"})
+				templ_7745c5c3_Err = templ.RenderScriptItems(ctx, templ_7745c5c3_Buffer, templ.JSFuncCall("deleteFile", item.FileId))
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
@@ -263,7 +263,7 @@ func DrivePage(files []models.FileMetadata, dirs []models.DirectoryMetadata, dir
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
 				}
-				var templ_7745c5c3_Var13 templ.ComponentScript = templ.ComponentScript{Call: "deleteFile('" + item.FileId + "')"}
+				var templ_7745c5c3_Var13 templ.ComponentScript = templ.JSFuncCall("deleteFile", item.FileId)
 				_, templ_7745c5c3_Err = templ_7745c5c3_Buffer.WriteString(templ_7745c5c3_Var13.Call)
 				if templ_7745c5c3_Err != nil {
 					return templ_7745c5c3_Err
@@ -320,7 +320,7 @@ func DrivePage(files []models.FileMetadata, dirs []models.DirectoryMetadata, dir
 					return templ_7745c5c3_Err
 				}
 			}
-			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, "</tbody></table></div></div></section><div class=\"modal fade\" id=\"modalPreview\" tabindex=\"-1\" role=\"dialog\" aria-hidden=\"true\"><div class=\"modal-dialog modal-full modal-dialog-centered modal-dialog-scrollable\" role=\"document\"><div class=\"modal-content\"><div class=\"modal-header\"><h5 class=\"modal-title\" id=\"modalPreviewTitle\"></h5></div><div class=\"modal-body\" id=\"modalPreviewBody\"><img id=\"modalImageBody\" style=\"max-height: 100%; max-width: 100%; margin: auto; display: block\"></div></div></div></div><script>\n\t\t\t\tfunction showModalImage(file_id, filename){\n\t\t\t\t\tdocument.getElementById(\"modalPreviewTitle\").innerHTML = filename\n\t\t\t\t\tdocument.getElementById(\"modalImageBody\").src = `/api/v1/files/show?file_id=${file_id}`\n\t\t\t\t\tdocument.getElementById(\"modalImageBody\").alt = filename\n\t\t\t\t}\n\t\t\t</script></div>")
+			templ_7745c5c3_Err = templruntime.WriteString(templ_7745c5c3_Buffer, 22, "</tbody></table></div></div></section><div class=\"modal fade\" id=\"modalPreview\" tabindex=\"-1\" role=\"dialog\" aria-hidden=\"true\"><div class=\"modal-dialog modal-full modal-dialog-centered modal-dialog-scrollable\" role=\"document\"><div class=\"modal-content\"><div class=\"modal-header\"><h5 class=\"modal-title\" id=\"modalPreviewTitle\"></h5></div><div class=\"modal-body\" id=\"modalPreviewBody\"><img id=\"modalImageBody\" style=\"max-height: 100%; max-width: 100%; margin: auto; display: block\"></div></div></div></div></div>")
 			if templ_7745c5c3_Err != nil {
 				return templ_7745c5c3_Err
 			}
