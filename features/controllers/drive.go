@@ -43,7 +43,7 @@ func DrivePage(c echo.Context) error {
 			fmt.Sprintf(`error getting dirs data: %s`, err.Error()),
 		))
 	}
-	totalsize, max_storage, err := models.GetTotalSize(username, "/")
+	totalsize, max_storage, err := models.GetTotalSize(username)
 	if err != nil {
 		return utils.RenderTempl(c, 200, views.DrivePage(
 			[]models.FileMetadata{},

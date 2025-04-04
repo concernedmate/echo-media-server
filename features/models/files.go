@@ -211,10 +211,10 @@ func ListDirectory(username string, basedir string) ([]DirectoryMetadata, error)
 	return dirs, nil
 }
 
-func GetTotalSize(username string, basedir string) (stored string, max_storage string, err error) {
+func GetTotalSize(username string) (stored string, max_storage string, err error) {
 	rows, err := db.Query(
-		`SELECT file_id FROM files WHERE username = ? AND directory LIKE ?`,
-		username, basedir,
+		`SELECT file_id FROM files WHERE username = ?`,
+		username,
 	)
 	if err != nil {
 		return "", "", err
