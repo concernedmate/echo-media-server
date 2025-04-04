@@ -213,7 +213,7 @@ func ListDirectory(username string, basedir string) ([]DirectoryMetadata, error)
 
 func GetTotalSize(username string, basedir string) (stored string, max_storage string, err error) {
 	rows, err := db.Query(
-		`SELECT file_id FROM files WHERE username = ? AND directory = ?`,
+		`SELECT file_id FROM files WHERE username = ? AND directory LIKE ?`,
 		username, basedir,
 	)
 	if err != nil {
