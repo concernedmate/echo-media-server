@@ -1,6 +1,5 @@
 package views
 
-
 templ LoginPage(alerts ...string) {
 	<!DOCTYPE html>
 	<html lang="en">
@@ -8,7 +7,7 @@ templ LoginPage(alerts ...string) {
 			<meta charset="UTF-8"/>
 			<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 			<title>Media Server - Login Page</title>
-            <script src="https://unpkg.com/@tailwindcss/browser@4"></script>
+			<script src="https://unpkg.com/@tailwindcss/browser@4"></script>
 		</head>
 		<body>
 			<style>
@@ -44,21 +43,7 @@ templ LoginPage(alerts ...string) {
 				input[type="submit"]:hover {
 					background-color: #004d40;
 				}
-			</style>
-			<div class="login-container">
-				<div class="header-login-container">
-					<h2 class="title">Welcome To</h2>
-					<h3 class="sub-title">Media-Server</h3>
-				</div>
-				for _,alert := range alerts {
-					<p style="color: rgb(175, 0, 0);">{ alert }</p>
-				}
-				<form method="post" action="/">
-					<input id="username" name="username" type="text" style="width: 95%;" placeholder="Username" required/>
-					<input id="password" name="password" type="password" style="width: 95%;" placeholder="Password" required/>
-					<input type="submit" value="Login"/>
-				</form>
-				<style>
+
 				body {
 						display: flex;
 						justify-content: center;
@@ -84,6 +69,20 @@ templ LoginPage(alerts ...string) {
 					align-items: center;
 				}
 			</style>
+			
+			<div class="login-container">
+				<div class="header-login-container">
+					<h2 class="title">Welcome To</h2>
+					<h3 class="sub-title">Media-Server</h3>
+				</div>
+				for _,alert := range alerts {
+					<p style="color: rgb(175, 0, 0);">{ alert }</p>
+				}
+				<form method="post" action="/">
+					<input id="username" name="username" type="text" placeholder="Username" required/>
+					<input id="password" name="password" type="password" placeholder="Password" required/>
+					<input type="submit" value="Login"/>
+				</form>
 			</div>
 		</body>
 	</html>

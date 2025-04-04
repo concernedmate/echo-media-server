@@ -22,13 +22,13 @@ templ ModalHeader(title string) {
 	</h5>
 }
 
-templ DrivePage(files []models.FileMetadata, dirs []models.DirectoryMetadata, directory []string, alerts ...string) {
+templ DrivePage(files []models.FileMetadata, dirs []models.DirectoryMetadata, directory []string, totalsize string, alerts ...string) {
 	@template.BaseAdmin(
 		template.BaseEntity{
 			Styles:      DriveStyles(),
 			Scripts:     DriveScript(),
 			Page:        "Drive Page",
-			Subtitle:    "",
+			Subtitle:    totalsize,
 			Breadcrumbs: directory,
 		}) {
 		<div>

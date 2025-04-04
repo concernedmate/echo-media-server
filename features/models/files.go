@@ -6,6 +6,7 @@ import (
 	"mime/multipart"
 	"os"
 	"path"
+	"strconv"
 	"strings"
 
 	"github.com/google/uuid"
@@ -208,4 +209,68 @@ func ListDirectory(username string, basedir string) ([]DirectoryMetadata, error)
 	}
 
 	return dirs, nil
+}
+
+func GetTotalSize(username string, basedir string) (stored string, max_storage string, err error) {
+	rows, err := db.Query(
+		`SELECT file_id FROM files WHERE username = ? AND directory = ?`,
+		username, basedir,
+	)
+	if err != nil {
+		return "", "", err
+	}
+	defer rows.Close()
+
+	var total int64 = 0
+	for rows.Next() {
+		var file_id string
+		err = rows.Scan(&file_id)
+		if err != nil {
+			return "", "", err
+		}
+
+		file, err := os.Open(path.Join(configs.UPLOAD_BASEDIR(), file_id))
+		if err != nil {
+			continue
+		}
+		defer func() {
+			_ = file.Close()
+		}()
+
+		stat, err := file.Stat()
+		if err != nil {
+			continue
+		}
+
+		total += stat.Size()
+
+		_ = file.Close()
+	}
+
+	if total < 1000*1000 {
+		stored = strconv.Itoa(int(total/1000)) + " KB"
+	} else if total < 1000*1000*1000 {
+		stored = strconv.Itoa(int(total/1000/1000)) + " MB"
+	} else {
+		stored = strconv.Itoa(int(total/1000/1000/1000)) + " GB"
+	}
+
+	var max_stored_int int64
+	err = db.QueryRow(`SELECT max_storage FROM users WHERE username = ?`, username).Scan(&max_stored_int)
+	if err != nil {
+		return "", "", err
+	}
+
+	if max_stored_int < 1000*1000 {
+		max_storage = strconv.Itoa(int(max_stored_int/1000)) + " KB"
+	} else if max_stored_int < 1000*1000*1000 {
+		max_storage = strconv.Itoa(int(max_stored_int/1000/1000)) + " MB"
+	} else {
+		max_storage = strconv.Itoa(int(max_stored_int/1000/1000/1000)) + " GB"
+	}
+	if max_stored_int == -1 {
+		max_storage = "unlimited"
+	}
+
+	return stored, max_storage, nil
 }
