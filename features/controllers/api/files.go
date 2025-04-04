@@ -8,6 +8,7 @@ import (
 	"media-server/utils"
 	"os"
 	"path"
+	"strings"
 
 	"github.com/labstack/echo/v4"
 )
@@ -80,6 +81,42 @@ func DownloadFile(c echo.Context) error {
 	defer file.Close()
 
 	return c.Attachment(path.Join(configs.UPLOAD_BASEDIR(), metadata.FileId), metadata.Filename)
+}
+
+func ShowContent(c echo.Context) error {
+	file_id := c.QueryParam("file_id")
+	if file_id == "" {
+		return utils.ResponseJSON(c, 400, "[Bad Request] file_id is required", nil)
+	}
+
+	metadata, err := models.GetFileMetadata(file_id)
+	if err != nil {
+		return utils.ResponseJSON(c, 400, "[Bad Request] "+err.Error(), nil)
+	}
+
+	split := strings.Split(metadata.Filename, ".")
+	ext := split[len(split)-1]
+
+	if ext == "png" || ext == "jpg" || ext == "gif" {
+		file, err := os.Open(path.Join(configs.UPLOAD_BASEDIR(), metadata.FileId))
+		if err != nil {
+			return utils.ResponseJSON(c, 400, "[Bad Request] "+err.Error(), nil)
+		}
+		defer file.Close()
+
+		return c.Inline(path.Join(configs.UPLOAD_BASEDIR(), metadata.FileId), metadata.Filename)
+	} else if ext == "mp4" {
+		// TODO
+	}
+
+	// send no preview image
+	file, err := os.Open("./resources/assets/static/images/no_preview_available.png")
+	if err != nil {
+		return utils.ResponseJSON(c, 400, "[Bad Request] "+err.Error(), nil)
+	}
+	defer file.Close()
+
+	return c.Inline("./resources/assets/static/images/no_preview_available.png", file.Name())
 }
 
 func DeleteFile(c echo.Context) error {

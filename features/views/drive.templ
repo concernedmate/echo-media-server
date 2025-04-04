@@ -16,6 +16,12 @@ templ DriveScript() {
 	<script src="assets/static/js/pages/simple-datatables.js"></script>
 }
 
+templ ModalHeader(title string) {
+	<h5 class="modal-title" id="exampleModalCenterTitle">
+		{ title }
+	</h5>
+}
+
 templ DrivePage(files []models.FileMetadata, dirs []models.DirectoryMetadata, directory []string, alerts ...string) {
 	@template.BaseAdmin(
 		template.BaseEntity{
@@ -116,9 +122,19 @@ templ DrivePage(files []models.FileMetadata, dirs []models.DirectoryMetadata, di
                                                             return strconv.Itoa(int(item.Filesize/1000/1000)) + " MB"
                                                         }() }
 												</div>
-												<button class="dropdown-item">
+												// button
+												<button
+													type="button"
+													class="btn btn-outline-primary block dropdown-item"
+													data-bs-toggle="modal"
+													data-bs-target="#modalPreview"
+													onclick={ templ.JSFuncCall("showModalImage", item.FileId, item.Filename) }
+												>
 													<i class="bi bi-envelope-open-fill"></i> Open
 												</button>
+												// @template.ModalCenterBtn(fmt.Sprintf("modal_%s", item.FileId), "dropdown-item") {
+												// 	<i class="bi bi-envelope-open-fill"></i> Open
+												// }
 												<a
 													target="_blank"
 													href={ templ.SafeURL(`/api/v1/files/download?file_id=` + item.FileId) }
@@ -154,6 +170,29 @@ templ DrivePage(files []models.FileMetadata, dirs []models.DirectoryMetadata, di
 					</div>
 				</div>
 			</section>
+			// modal
+			<div class="modal fade" id="modalPreview" tabindex="-1" role="dialog" aria-hidden="true">
+				<div
+					class="modal-dialog modal-full modal-dialog-centered modal-dialog-scrollable"
+					role="document"
+				>
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5 class="modal-title" id="modalPreviewTitle"></h5>
+						</div>
+						<div class="modal-body" id="modalPreviewBody">
+							<img id="modalImageBody" style="max-height: 100%; max-width: 100%; margin: auto; display: block"/>
+						</div>
+					</div>
+				</div>
+			</div>
+			<script>
+				function showModalImage(file_id, filename){
+					document.getElementById("modalPreviewTitle").innerHTML = filename
+					document.getElementById("modalImageBody").src = `/api/v1/files/show?file_id=${file_id}`
+					document.getElementById("modalImageBody").alt = filename
+				}
+			</script>
 		</div>
 	}
 }
