@@ -42,6 +42,7 @@ func UploadMultipleFiles(c echo.Context) (err error) {
 		Directory: []byte{},
 		Data:      nil,
 	}
+	transferred := 0
 	transfer_mode := 0
 	for {
 		var msg []byte
@@ -101,7 +102,8 @@ func UploadMultipleFiles(c echo.Context) (err error) {
 				if err != nil {
 					return ws.WriteMessage(websocket.TextMessage, []byte("[Error] "+err.Error()))
 				} else {
-					ws.WriteMessage(websocket.TextMessage, []byte("+"+strconv.Itoa(n)))
+					transferred += n
+					ws.WriteMessage(websocket.TextMessage, []byte(strconv.Itoa(transferred)))
 				}
 			}
 		}
