@@ -13,18 +13,47 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-func UploadFile(c echo.Context) error {
+func CreateFolder(c echo.Context) error {
 	dir := c.FormValue("dir")
-	if dir == "" {
-		dir = "/"
+	if dir == "" || dir == "/" || strings.Contains(dir, "/") {
+		return utils.ResponseJSON(c, 400, "[Bad Request] invalid directory name", nil)
 	}
 
-	files, err := c.FormFile("file")
+	curr_dir := c.FormValue("curr_dir")
+	if curr_dir == "" || curr_dir == "/" {
+		dir = "/" + dir
+	} else {
+		dir = curr_dir + "/" + dir
+	}
+
+	username, ok := c.Get("username").(string)
+	if !ok {
+		return utils.ResponseJSON(c, 500, "[Internal Server Error] invalid username", nil)
+	}
+
+	err := models.CreateFolder(dir, username)
+	if err != nil {
+		return utils.ResponseJSON(c, 500, "[Internal Server Error] "+err.Error(), nil)
+	}
+
+	return utils.ResponseJSON(c, 200, "[Success]", nil)
+}
+
+func DeleteFolder(c echo.Context) error {
+	var req struct {
+		Directory string `json:"directory" validate:"required"`
+	}
+
+	err := c.Bind(&req)
 	if err != nil {
 		return utils.ResponseJSON(c, 400, "[Bad Request] "+err.Error(), nil)
 	}
 
-	err = models.UploadFile(files, dir, "admin")
+	if req.Directory == "" {
+		return utils.ResponseJSON(c, 400, "[Bad Request] directory is required", nil)
+	}
+
+	err = models.DeleteFolder(req.Directory)
 	if err != nil {
 		return utils.ResponseJSON(c, 500, "[Internal Server Error] "+err.Error(), nil)
 	}
@@ -97,7 +126,8 @@ func ShowContent(c echo.Context) error {
 	split := strings.Split(metadata.Filename, ".")
 	ext := split[len(split)-1]
 
-	if ext == "png" || ext == "jpg" || ext == "gif" {
+	switch ext {
+	case "png", "jpg", "gif":
 		file, err := os.Open(path.Join(configs.UPLOAD_BASEDIR(), metadata.FileId))
 		if err != nil {
 			return utils.ResponseJSON(c, 400, "[Bad Request] "+err.Error(), nil)
@@ -105,7 +135,7 @@ func ShowContent(c echo.Context) error {
 		defer file.Close()
 
 		return c.Inline(path.Join(configs.UPLOAD_BASEDIR(), metadata.FileId), metadata.Filename)
-	} else if ext == "mp4" {
+	case "mp4":
 		// TODO
 	}
 

@@ -1,6 +1,7 @@
 package models
 
 import (
+	"database/sql"
 	"io"
 	"media-server/configs"
 	"mime/multipart"
@@ -26,6 +27,7 @@ type DirectoryMetadata struct {
 	Directory string `json:"directory"`
 }
 
+// deprecated
 func UploadFile(file *multipart.FileHeader, directory string, username string) error {
 	src, err := file.Open()
 	if err != nil {
@@ -51,6 +53,29 @@ func UploadFile(file *multipart.FileHeader, directory string, username string) e
 	)
 	if err != nil {
 		_ = os.Remove(path.Join(configs.UPLOAD_BASEDIR(), file_id.String()))
+		return err
+	}
+
+	return nil
+}
+
+func CreateFolder(directory string, username string) error {
+	file_id := uuid.New()
+
+	var check string
+	err := db.QueryRow(`SELECT file_id FROM files WHERE directory = ? AND username = ?`, directory, username).Scan(&check)
+	if err != nil && err != sql.ErrNoRows {
+		return err
+	}
+	if check != "" {
+		return nil
+	}
+
+	_, err = db.Exec(
+		`INSERT INTO files (file_id, filename, directory, username) VALUES (?, ?, ?, ?)`,
+		file_id, "", directory, username,
+	)
+	if err != nil {
 		return err
 	}
 
@@ -90,6 +115,10 @@ func UploadMultipleFiles(files []*multipart.FileHeader, directory string, userna
 }
 
 func SaveFileWebsocket(file_id string, filename string, directory string, username string) error {
+	if directory == "" {
+		directory = "/"
+	}
+
 	_, err := db.Exec(
 		`INSERT INTO files (file_id, filename, directory, username) VALUES (?, ?, ?, ?)`,
 		file_id, filename, directory, username,
@@ -111,6 +140,15 @@ func DeleteFile(file_id string) error {
 	return nil
 }
 
+func DeleteFolder(dir string) error {
+	_, err := db.Exec(`DELETE FROM files WHERE directory = ? AND filename = ?`, dir, "")
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func GetFileMetadata(file_id string) (FileMetadata, error) {
 	var row FileMetadata
 	err := db.QueryRow(
@@ -128,7 +166,8 @@ func ListFiles(username string, basedir string) ([]FileMetadata, error) {
 	rows, err := db.Query(
 		`SELECT file_id, filename, directory, created_at, updated_at 
 		FROM files 
-		WHERE username = ? AND directory = ?`,
+		WHERE username = ? AND directory = ?
+		ORDER BY created_at DESC`,
 		username, basedir,
 	)
 	if err != nil {
@@ -142,6 +181,10 @@ func ListFiles(username string, basedir string) ([]FileMetadata, error) {
 		err = rows.Scan(&row.FileId, &row.Filename, &row.Directory, &row.CreatedAt, &row.UpdatedAt)
 		if err != nil {
 			return []FileMetadata{}, err
+		}
+
+		if row.Filename == "" {
+			continue
 		}
 
 		file, err := os.Open(path.Join(configs.UPLOAD_BASEDIR(), row.FileId))
@@ -167,7 +210,8 @@ func ListDirectory(username string, basedir string) ([]DirectoryMetadata, error)
 	rows, err := db.Query(
 		`SELECT DISTINCT directory 
 		FROM files 
-		WHERE username = ? AND directory != ? AND directory LIKE ?`,
+		WHERE username = ? AND directory != ? AND directory LIKE ?
+		ORDER BY created_at DESC`,
 		username, basedir, basedir+"%",
 	)
 	if err != nil {
@@ -179,8 +223,7 @@ func ListDirectory(username string, basedir string) ([]DirectoryMetadata, error)
 	cache := map[string]bool{}
 	for rows.Next() {
 		var row DirectoryMetadata
-		err = rows.Scan(&row.Directory)
-		if err != nil {
+		if err := rows.Scan(&row.Directory); err != nil {
 			return []DirectoryMetadata{}, err
 		}
 
@@ -195,11 +238,9 @@ func ListDirectory(username string, basedir string) ([]DirectoryMetadata, error)
 				}
 			}
 		} else {
-			split1 := strings.Split(row.Directory, basedir)[1]
-			split2 := strings.Split(split1, "/")
-			if len(split2) > 1 {
-				row.Dirname = split2[1]
-				row.Directory = path.Join(basedir, split2[1])
+			cleaned := strings.ReplaceAll(row.Directory, basedir+"/", "")
+			if !strings.Contains(cleaned, "/") {
+				row.Dirname = cleaned
 				if !cache[row.Dirname] {
 					dirs = append(dirs, row)
 					cache[row.Dirname] = true

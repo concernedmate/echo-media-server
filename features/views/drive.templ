@@ -4,6 +4,7 @@ import (
 	"media-server/features/models"
 	"media-server/features/views/template"
 	"strconv"
+	"strings"
 )
 
 templ DriveStyles() {
@@ -40,9 +41,6 @@ templ DrivePage(files []models.FileMetadata, dirs []models.DirectoryMetadata, di
 					<div id="uploading-alert" hidden></div>
 					<div class="col-md-8">
 						<div class="card">
-							<div class="card-header">
-								<h4 class="card-title">File Upload</h4>
-							</div>
 							<div class="card-body">
 								<div class="row">
 									<label for="files" class="form-label">Multiple files input</label>
@@ -56,16 +54,13 @@ templ DrivePage(files []models.FileMetadata, dirs []models.DirectoryMetadata, di
 					</div>
 					<div class="col-md-4">
 						<div class="card">
-							<div class="card-header">
-								<h4 class="card-title">New Directory</h4>
-							</div>
 							<div class="card-body">
 								<div class="row">
-									<label for="dir" class="form-label">Must not includes '/'</label>
+									<label for="dir" class="form-label">Folder</label>
 									<div class="input-group">
-										<button class="btn btn-secondary" onclick="goBack()">..</button>
+										<input hidden value={ strings.Join(directory, "/") } id="curr_dir" name="curr_dir"/>
 										<input class="form-control" type="text" id="dir" name="dir"/>
-										<button class="btn btn-primary" onclick="openFolder()">Open</button>
+										<button class="btn btn-primary" onclick="createFolder()">New Folder</button>
 									</div>
 								</div>
 							</div>
@@ -86,6 +81,12 @@ templ DrivePage(files []models.FileMetadata, dirs []models.DirectoryMetadata, di
 								</tr>
 							</thead>
 							<tbody>
+								if strings.Join(directory, "") != "" {
+									<tr>
+										<td></td>
+										<td colspan="3"><div type="button" onclick="goBack()">..</div></td>
+									</tr>
+								}
 								for _,item := range dirs {
 									<tr>
 										<td>
@@ -96,9 +97,19 @@ templ DrivePage(files []models.FileMetadata, dirs []models.DirectoryMetadata, di
 												<a href={ templ.SafeURL("drive?dir=" + item.Directory) } class="dropdown-item">
 													<i class="bi bi-folder2-open"></i> Open
 												</a>
+												<button
+													onclick={ templ.JSFuncCall("deleteFolder", item.Directory) }
+													class="dropdown-item"
+												>
+													<i class="bi bi-trash-fill"></i> Delete
+												</button>
 											</div>
 										</td>
-										<td>{ item.Dirname }</td>
+										<td>
+											<div type="button" onclick={ templ.JSUnsafeFuncCall(`window.location.href="drive?dir=` + item.Directory + `"`) }>
+												{ item.Dirname }
+											</div>
+										</td>
 										<td>-</td>
 										<td>-</td>
 									</tr>
@@ -122,19 +133,6 @@ templ DrivePage(files []models.FileMetadata, dirs []models.DirectoryMetadata, di
                                                             return strconv.Itoa(int(item.Filesize/1000/1000)) + " MB"
                                                         }() }
 												</div>
-												// button
-												<button
-													type="button"
-													class="btn btn-outline-primary block dropdown-item"
-													data-bs-toggle="modal"
-													data-bs-target="#modalPreview"
-													onclick={ templ.JSFuncCall("showModalImage", item.FileId, item.Filename) }
-												>
-													<i class="bi bi-envelope-open-fill"></i> Open
-												</button>
-												// @template.ModalCenterBtn(fmt.Sprintf("modal_%s", item.FileId), "dropdown-item") {
-												// 	<i class="bi bi-envelope-open-fill"></i> Open
-												// }
 												<a
 													target="_blank"
 													href={ templ.SafeURL(`/api/v1/files/download?file_id=` + item.FileId) }
@@ -150,7 +148,17 @@ templ DrivePage(files []models.FileMetadata, dirs []models.DirectoryMetadata, di
 												</button>
 											</div>
 										</td>
-										<td>{ item.Filename }</td>
+										<td>
+											<div
+												type="button"
+												class="btn btn-outline-primary block dropdown-item"
+												data-bs-toggle="modal"
+												data-bs-target="#modalPreview"
+												onclick={ templ.JSFuncCall("showModalImage", item.FileId, item.Filename) }
+											>
+												{ item.Filename }
+											</div>
+										</td>
 										<td>
 											{ func ()string{
                                                 if (item.Filesize == -1){
@@ -170,19 +178,15 @@ templ DrivePage(files []models.FileMetadata, dirs []models.DirectoryMetadata, di
 					</div>
 				</div>
 			</section>
-			
 			// modal
 			<div class="modal fade" id="modalPreview" tabindex="-1" role="dialog" aria-hidden="true">
-				<div
-					class="modal-dialog modal-full modal-dialog-centered modal-dialog-scrollable"
-					role="document"
-				>
+				<div class="modal-dialog modal-full modal-dialog-centered modal-dialog-scrollable" role="document">
 					<div class="modal-content">
 						<div class="modal-header">
 							<h5 class="modal-title" id="modalPreviewTitle"></h5>
 						</div>
 						<div class="modal-body" id="modalPreviewBody">
-							<img id="modalImageBody" style="max-height: 100%; max-width: 100%; margin: auto; display: block"/>
+							<img id="modalImageBody" style="max-height: 80vh; max-width: 80vw; margin: auto; display: block"/>
 						</div>
 					</div>
 				</div>

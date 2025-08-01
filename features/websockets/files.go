@@ -6,6 +6,7 @@ import (
 	"media-server/features/models"
 	"os"
 	"path"
+	"strconv"
 
 	"github.com/google/uuid"
 	"github.com/gorilla/websocket"
@@ -96,9 +97,11 @@ func UploadMultipleFiles(c echo.Context) (err error) {
 					continue
 				}
 
-				_, err = file.Data.Write(msg)
+				n, err := file.Data.Write(msg)
 				if err != nil {
 					return ws.WriteMessage(websocket.TextMessage, []byte("[Error] "+err.Error()))
+				} else {
+					ws.WriteMessage(websocket.TextMessage, []byte("+"+strconv.Itoa(n)))
 				}
 			}
 		}
